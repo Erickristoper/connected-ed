@@ -18,7 +18,7 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://connect-ed.azurewebsites.net/",
+      "audience": "https://yourdomain.com",
       "issuer": "feathers",
       "algorithm": "HS256",
       "expiresIn": "1d"
