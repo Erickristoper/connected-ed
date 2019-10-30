@@ -1,70 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>A FeathersJS application</title>
-    <meta name="description" content="A FeathersJS server">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="UTF-8">
+  <title>Feathers Example</title>
+<link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/base.css">
+    <link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/chat.css">
+</head>
+<body>
+  <main id="main" class="container">
+    <h1>XXXX</h1>
+  
+    <h2>Here are the current messages:</h2>
+  </main>
 
-      html, body {
-        font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
-        font-weight: 400;
-        font-size: 16px;
-        color: #2c3e50;
-      }
+  <script src="//unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  <script type="text/javascript">
+    const socket = io('http://192.168.8.192:3030');
+    const app = feathers();
+ 
+    app.configure(feathers.socketio(socket));
 
-      .center-text {
-        text-align: center;
-      }
+    function addOrganization(org) {
+      // put all org details here located at http://192.168.8.192:3030/organizations
+      document.getElementById('main').innerHTML += `<h4>${org.name}</h4>`;
+      document.getElementById('main').innerHTML += `<p>${org.website}</p>`;
+      document.getElementById('main').innerHTML += `<p>${org.description}</p>`;
+      document.getElementById('main').innerHTML += `<br/>`
+    }
 
-      main {
-        margin-top: 100px;
-        padding: 20px;
-      }
+    function addCampaign(campaign) {
+      // put all org details here located at http://192.168.8.192:3030/campaigns
+      document.getElementById('main').innerHTML += `<h4>${campaign.name}</h4>`;
+      document.getElementById('main').innerHTML += `<p>${campaign.description}</p>`;
+      document.getElementById('main').innerHTML += `<p>${campaign.image}</p>`;
+      document.getElementById('main').innerHTML += `<p>${campaign.goal_amount}</p>`;
+      document.getElementById('main').innerHTML += `<p>${campaign.raised_amount}</p>`;
+      document.getElementById('main').innerHTML += `<p>${ocampaignrg.organization_id}</p>`;
+      document.getElementById('main').innerHTML += `<br/>`
+    }
 
-      img.logo {
-        display: block;
-        margin: 0 auto;
-        max-width: 100%;
-        margin-bottom: 30px;
-      }
+    const main = async () => {
+      const organizations = await app.service('organizations').find();
+      organizations.data.forEach(addOrganization);
+      app.service('organizations').on('created', addOrganization);
+    };
 
-      h2 {
-        font-size: 2em;
-        font-weight: 100;
-      }
-
-      footer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 20px;
-      }
-
-      footer p {
-        font-weight: 300;
-        font-size: 1.0em;
-      }
-
-      a {
-        color: #3cf;
-        text-decoration: none;
-      }
-
-      a:hover,
-      a:focus {
-        color: #3cf;
-      }
-    </style>
-  </head>
-  <body>
-    <main class="container">
-      This is the start
-  </body>
+    main();
+  </script>
+</body>
 </html>
