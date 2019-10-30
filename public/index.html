@@ -1,18 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>connect-Ed</title>
-<link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/base.css">
-    <link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/chat.css">
-</head>
-<body>
-  <main id="main" class="container">
-    <h1>XXXX</h1>
-  
-    <h2>Here are the current messages:</h2>
-  </main>
 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>connect-Ed</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+</head>
+
+<body>
+  <section class="section has-background-light">
+    <div class="container">
+      <h4 class="title is-4">Top Campaigns</h4>
+      <p></p>
+    </div>
+
+    <div id="campaigns-cards" class="columns">
+      <!-- Campaigns from the service /campaigns go here -->
+    </div>
+    
+    <div class="modal">
+        <form id="form" class="modal" onsubmit="sendDonation(event.preventDefault())">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <section class="modal-card-body">
+              <div class="field">
+                <div class="control">
+                  <input id="campaign-title" class="input" type="text" placeholder="Php 100">
+                </div>
+              </div>
+            <footer class="modal-card-foot has-background-warning">
+              <button type="submit" class="button is-success">Send</button>
+            </footer>
+        </form>
+      </div>
+  </section>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="//unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
   <script type="text/javascript">
@@ -21,21 +45,40 @@
  
     app.configure(feathers.socketio(socket));
 
-    function addOrganization(org) {
-      // put all org details here located at http://192.168.8.192:3030/organizations
-      document.getElementById('main').innerHTML += `<h4>${org.name}</h4>`;
-      document.getElementById('main').innerHTML += `<p>${org.website}</p>`;
-      document.getElementById('main').innerHTML += `<p>${org.description}</p>`;
-      document.getElementById('main').innerHTML += `<br/>`
+    function addCampaign(cam) {
+      // put all org details here located at http://192.168.8.192:3030/campaigns
+        document.getElementById('campaigns-cards').innerHTML += `<div class="card">`
+            + `<header class="card-header">`
+            + `<p class="card-header-title"> ${cam.name} </p>`
+            + `</header>`
+            + `<div class="card-content">`
+            + `<div class="content"> ${cam.description} <br> </div>`
+            + `<progress class="progress is-warning" value="${(cam.raised_amount / cam.goal_amount) * 100}" max="100">${(cam.raised_amount / cam.goal_amount) * 100}%</progress>`
+            + `<p class="is-size-5-mobile ">Php ${cam.raised_amount || 0} of Php ${cam.goal_amount}</p>`
+            + `</div>`
+            + `<footer class="card-footer">`
+            + `<a href="https://www.paypal.com/ph/home" class="card-footer-item">Donate</a>`
+            + `</footer>`
+            + `</div> <br/>`;
     }
 
+    
     const main = async () => {
-      const organizations = await app.service('organizations').find();
-      organizations.data.forEach(addOrganization);
-      app.service('organizations').on('created', addOrganization);
+      const campaigns = await app.service('campaigns').find();
+      campaigns.data.forEach(addCampaign);
+      app.service('campaigns').on('created', addCampaign);
     };
 
     main();
+
+    $("#showModal").click(function () {
+      $(".modal").addClass("is-active");
+    });
+
+    $("#closeModal").click(function () {
+      $(".modal").removeClass("is-active");
+    });
   </script>
+  
 </body>
 </html>

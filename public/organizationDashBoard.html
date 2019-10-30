@@ -10,7 +10,15 @@
 </head>
 
 <body>
-  <section class="section">
+
+  <div class="container is-fullhd has-background-black-bis">
+    <div class="column">
+      <figure class="image is-3by15">
+        <img src="connect-edLogo1.png">
+      </figure>
+    </div>
+  </div>
+  <section class="section has-background-white-bis">
     <div class="container">
       <h1 class="title">
         Howdy!
@@ -43,7 +51,8 @@
               <div class="field">
                 <label class="label">Description</label>
                 <div class="control">
-                  <textarea id="campaign-description" class="textarea" placeholder="Your compelling story here..."></textarea>
+                  <textarea id="campaign-description" class="textarea"
+                    placeholder="Your compelling story here..."></textarea>
                 </div>
               </div>
               <div class="field">
@@ -72,7 +81,7 @@
 
   <section class="section has-background-light">
     <div class="container">
-      <h4 class="title is-4">Running Campaigns</h4>
+      <h4 class="title is-4">Your On Going Campaigns</h4>
       <p></p>
     </div>
 
@@ -80,6 +89,31 @@
       <!-- Campaigns from the service /campaigns go here -->
     </div>
   </section>
+
+  <section class="section has-background-white-bis">
+      <h4 class="title is-4">How's the community doing?</h4>
+      <div class="notification is-warning">
+        <p>Assessing Basic Education Service Delivery in the Philippines: Public Education Expenditure Tracking and
+          Quantitative Service Delivery Study</p>
+        <button id="showModal" class="button is-primary modal-button" data-target="modal" aria-haspopup="true">View
+          Report</button>
+      </div>
+      <div class="notification is-warning">
+        <p><strong>Sucess Story:</strong> Childhope reached 2000 students!</p>
+        <button id="showModal" class="button is-primary modal-button" data-target="modal" aria-haspopup="true">Read full
+          story</button>
+      </div>
+  </section>
+  <section class="section has-background-danger">
+         <div class="notification is-warning">
+          <strong>Has something interesting to share?</strong>
+          <button id="showModal" class="button is-primary modal-button" data-target="modal" aria-haspopup="true">Send your stories</button>
+        </div>
+      </section>
+
+
+
+
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="//unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
@@ -96,18 +130,19 @@
       const campaignGoal = document.getElementById('campaign-goal');
 
       // Create a new message with the input field value
-      await app.service('campaigns').create({
-        name: campaignTitle.value,
-        description: campaignDescription.value,
-        date: campaignDate.value,
-        goal_amount: campaignGoal.value
-      });
-
+      if (campaignTitle.value != "") {
+        await app.service('campaigns').create({
+          name: campaignTitle.value,
+          description: campaignDescription.value,
+          date: campaignDate.value,
+          goal_amount: campaignGoal.value
+        });
+      }
       //clean up
-      campaignTitle.value  = '';
-      campaignDescription.value  = '';
-      campaignDate.value  = '';
-      campaignGoal.value  = '';
+      campaignTitle.value = '';
+      campaignDescription.value = '';
+      campaignDate.value = '';
+      campaignGoal.value = '';
       $(".modal").removeClass("is-active");
     }
 
