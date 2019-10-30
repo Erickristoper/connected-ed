@@ -1,4 +1,4 @@
 {
   "host": "impact-app.feathersjs.com",
-  "port": "process.env.PORT"
+  "port": "PORT"
 }
