@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Feathers Example</title>
+  <title>connect-Ed</title>
 <link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/base.css">
     <link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/chat.css">
 </head>
@@ -26,17 +26,6 @@
       document.getElementById('main').innerHTML += `<h4>${org.name}</h4>`;
       document.getElementById('main').innerHTML += `<p>${org.website}</p>`;
       document.getElementById('main').innerHTML += `<p>${org.description}</p>`;
-      document.getElementById('main').innerHTML += `<br/>`
-    }
-
-    function addCampaign(campaign) {
-      // put all org details here located at http://192.168.8.192:3030/campaigns
-      document.getElementById('main').innerHTML += `<h4>${campaign.name}</h4>`;
-      document.getElementById('main').innerHTML += `<p>${campaign.description}</p>`;
-      document.getElementById('main').innerHTML += `<p>${campaign.image}</p>`;
-      document.getElementById('main').innerHTML += `<p>${campaign.goal_amount}</p>`;
-      document.getElementById('main').innerHTML += `<p>${campaign.raised_amount}</p>`;
-      document.getElementById('main').innerHTML += `<p>${ocampaignrg.organization_id}</p>`;
       document.getElementById('main').innerHTML += `<br/>`
     }
 

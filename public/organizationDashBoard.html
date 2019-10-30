@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Howdy!
+      </h1>
+      <p class="subtitle">
+        This is your <strong>amazing</strong> dashboard!
+      </p>
+      <div class="notification is-warning">
+        Thinking of helping again and again?
+        <button id="showModal" class="button is-primary modal-button" data-target="modal" aria-haspopup="true">Add new
+          campaign</button>
+      </div>
+
+
+
+      <div class="modal">
+        <form id="form" class="modal" onsubmit="createCampaign(event.preventDefault())">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head has-background-warning">
+              <p class="modal-card-title">New Campaign</p>
+            </header>
+            <section class="modal-card-body">
+              <div class="field">
+                <label class="label">Title</label>
+                <div class="control">
+                  <input id="campaign-title" class="input" type="text" placeholder="Your revetting title here...">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Description</label>
+                <div class="control">
+                  <textarea id="campaign-description" class="textarea" placeholder="Your compelling story here..."></textarea>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Date</label>
+                <div class="control">
+                  <input id="campaign-date" class="input" type="text" placeholder="MM/DD/YYYY">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Goal Fund</label>
+                <div class="control">
+                  <input id="campaign-goal" class="input" type="text" placeholder="1000">
+                </div>
+              </div>
+            </section>
+            <footer class="modal-card-foot has-background-warning">
+              <button type="submit" class="button is-success">Save changes</button>
+              <button id="closeModal" class="button">Cancel</button>
+            </footer>
+        </form>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="section has-background-light">
+    <div class="container">
+      <h4 class="title is-4">Running Campaigns</h4>
+      <p></p>
+    </div>
+
+    <div id="campaigns-column" class="columns">
+      <!-- Campaigns from the service /campaigns go here -->
+    </div>
+  </section>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="//unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  <script type="text/javascript">
+    const socket = io('http://192.168.8.192:3030');
+    const app = feathers();
+    app.configure(feathers.socketio(socket));
+
+    async function createCampaign() {
+      const campaignTitle = document.getElementById('campaign-title');
+      const campaignDescription = document.getElementById('campaign-description');
+      const campaignDate = document.getElementById('campaign-date');
+      const campaignGoal = document.getElementById('campaign-goal');
+
+      // Create a new message with the input field value
+      await app.service('campaigns').create({
+        name: campaignTitle.value,
+        description: campaignDescription.value,
+        date: campaignDate.value,
+        goal_amount: campaignGoal.value
+      });
+
+      //clean up
+      campaignTitle.value  = '';
+      campaignDescription.value  = '';
+      campaignDate.value  = '';
+      campaignGoal.value  = '';
+      $(".modal").removeClass("is-active");
+    }
+
+    function addCampaign(cam) {
+      // put all org details here located at http://192.168.8.192:3030/campaigns
+      document.getElementById('campaigns-column').innerHTML += `<div class="columns">`
+        + `<div class="column is-fullhd">`
+        + ` <div class="notification is-success">`
+        + `<p class="is-size-4-mobile">${cam.name}</p>`
+        + ` <progress class="progress is-warning" value="${(cam.raised_amount / cam.goal_amount) * 100}" max="100">${(cam.raised_amount / cam.goal_amount) * 100}%</progress>`
+        + ` <p class="is-size-5-mobile ">Php ${cam.raised_amount || 0} of Php ${cam.goal_amount}</p>`
+        + ` </div>`
+        + ` </div>`;
+    }
+
+    const main = async () => {
+      const campaigns = await app.service('campaigns').find();
+      campaigns.data.forEach(addCampaign);
+      app.service('campaigns').on('created', addCampaign);
+    };
+
+    main();
+
+    $("#showModal").click(function () {
+      $(".modal").addClass("is-active");
+    });
+
+    $("#closeModal").click(function () {
+      $(".modal").removeClass("is-active");
+    });
+  </script>
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</body>
+
+</html>
