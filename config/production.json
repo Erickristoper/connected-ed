@@ -1,4 +1,4 @@
 {
-  "host": "impact-app.feathersjs.com",
+  "host": "https://connect-ed.azurewebsites.net/",
   "port": "PORT"
 }
