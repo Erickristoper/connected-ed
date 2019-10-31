@@ -2,83 +2,295 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>connect-Ed</title>
+  <title>Connect-Ed</title>
+  <link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/base.css">
+  <link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/chat.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <link rel="stylesheet" href="https://m.w3newbie.com/you-tube.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
-  <section class="section has-background-light">
-    <div class="container">
-      <h4 class="title is-4">Top Campaigns</h4>
-      <p></p>
+
+  <div class="container is-fullhd has-background-black-bis">
+    <div class="column">
+      <figure class="image is-3by15">
+        <img src="connected.png">
+      </figure>
+    </div>
+  </div>
+
+  <div id="slides" class="carousel slide" data-ride="carousel">
+    <ul class="carousel-indicators">
+      <li data-target="#slides" data-slide-to="0" class="active"></li>
+      <li data-target="#slides" data-slide-to="1"></li>
+      <li data-target="#slides" data-slide-to="2"></li>
+    </ul>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="educ1.jpg">
+        <div class="carousel-caption">
+          <h1 class="display-2"></h1>
+          <h3>Let's bridge funds for children's education</h3>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <section class="section">
+      <div class="container">
+        <h4 class="title is-5">#trending Campaigns</h4><br/>
+      </div>
+  
+      <div id="campaigns-cards" class="columnsz">
+        <!-- Campaigns from the service /campaigns go here -->
+      </div>
+    </section>
+
+  <!--- Three Column Section -->
+  <div class="container-fluid padding  has-background-light">
+    <div class="row text-center padding">
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <img src="book.png" width=70px; height=80px;>
+        <hr>
+
+        <h2 style="color:green" class="is-size-5"> 83.8% Literacy Rate</h2>
+
+        <h3 class="is-size-6">Of the country’s 48.0 million population 10 to 64 years old in 1994, about 40.2 million or
+          83.8 percent were found to be functionally literate.</h3>
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <img src="kid.png" width=70px; height=80px;>
+        <hr>
+
+        <h2 style="color:green" class="is-size-5">300+ Organizations </h2>
+        <h3 class="is-size-6">Current organizations which focuses mainly on Children's Education Funding in the
+          Philippines.</h3>
+      </div>
+
+      <div class="col-sm-12 col-sm-6 col-md-4">
+        <img src="money.png" width=70px; height=80px;>
+        <hr>
+
+        <h2 style="color:green" class="is-size-5">4.2M Worth of Donations</h2>
+        <h3 class="is-size-6"> Sum total of all the donations from collaborated Organizations.</h3>
+      </div>
+
     </div>
 
-    <div id="campaigns-cards" class="columns">
-      <!-- Campaigns from the service /campaigns go here -->
-    </div>
-    
-    <div class="modal">
-        <form id="form" class="modal" onsubmit="sendDonation(event.preventDefault())">
-          <div class="modal-background"></div>
-          <div class="modal-card">
-            <section class="modal-card-body">
-              <div class="field">
-                <div class="control">
-                  <input id="campaign-title" class="input" type="text" placeholder="Php 100">
-                </div>
-              </div>
-            <footer class="modal-card-foot has-background-warning">
-              <button type="submit" class="button is-success">Send</button>
-            </footer>
-        </form>
-      </div>
-  </section>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  </div>
+
+
+  <div id="main1">
+  </div>
+
+  <main id="mains" class="is-vcentered"><br/>
+    <h4 class="title is-4">Winning Organizations</h4>
+  </main>
+  <!-- The Modal -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"> </script>
   <script src="//unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
   <script type="text/javascript">
-    const socket = io();
+    const socket = io('http://192.168.8.192:3030');
     const app = feathers();
- 
+
     app.configure(feathers.socketio(socket));
+
+    function addOrganization(org) {
+      // put all org details here located at http://192.168.8.192:3030/organizations
+      document.getElementById('mains').innerHTML += `<div class="card mb-5" style="max-width: 100%;">  <div class="col-md-4"> <img class="card-img" src="education.jpg"><div class = "col-md-8" id ="desc"> <div class="card-body"> <h4 class="card-title is-size-5"  style ="color:red">${org.name}</h4> 
+      <p class="item is-size-7">${org.description}</p> <a href="${org.website}" class="btn btn-outline-secondary">Visit Website</a> </div></div></div>`;
+    }
 
     function addCampaign(cam) {
       // put all org details here located at http://192.168.8.192:3030/campaigns
-        document.getElementById('campaigns-cards').innerHTML += `<div class="card">`
-            + `<header class="card-header">`
-            + `<p class="card-header-title"> ${cam.name} </p>`
-            + `</header>`
-            + `<div class="card-content">`
-            + `<div class="content"> ${cam.description} <br> </div>`
-            + `<progress class="progress is-warning" value="${(cam.raised_amount / cam.goal_amount) * 100}" max="100">${(cam.raised_amount / cam.goal_amount) * 100}%</progress>`
-            + `<p class="is-size-5-mobile ">Php ${cam.raised_amount || 0} of Php ${cam.goal_amount}</p>`
-            + `</div>`
-            + `<footer class="card-footer">`
-            + `<a href="https://www.paypal.com/ph/home" class="card-footer-item">Donate</a>`
-            + `</footer>`
-            + `</div> <br/>`;
+      document.getElementById('campaigns-cards').innerHTML += `<div class="card">`
+        + `<header class="card-header">`
+        + `<p class="card-header-title"> ${cam.name} </p>`
+        + `</header>`
+        + `<div class="card-content">`
+        + `<div class="content"> ${cam.description} <br> </div>`
+        + `<progress class="progress is-warning" value="${(cam.raised_amount / cam.goal_amount) * 100}" max="100">${(cam.raised_amount / cam.goal_amount) * 100}%</progress>`
+        + `<p class="is-size-5-mobile ">Php ${cam.raised_amount || 0} of Php ${cam.goal_amount}</p>`
+        + `</div>`
+        + `<footer class="card-footer">`
+        // + `<a href="https://www.paypal.com/ph/home" class="card-footer-item">Donate</a>`
+        + `<a href="" class="card-footer-item" style="color:red" data-toggle="modal" data-target="#myModal">Donate</a>`
+        + `</footer>`
+        + `</div> <br/>`;
     }
 
-    
+    async function sendMoney() {
+      const campaignMoney = document.getElementById('campaign-money');
+
+      await app.service('campaigns').create({
+        raised_amount: campaignMoney.value
+      });
+    }
+
     const main = async () => {
+      const organizations = await app.service('organizations').find();
+      organizations.data.forEach(addOrganization);
+
       const campaigns = await app.service('campaigns').find();
       campaigns.data.forEach(addCampaign);
-      app.service('campaigns').on('created', addCampaign);
     };
 
     main();
 
-    $("#showModal").click(function () {
-      $(".modal").addClass("is-active");
-    });
+    function waitForElement(elementPath, callBack) {
+      window.setTimeout(function () {
+        if ($(elementPath).length) {
+          callBack(elementPath, $(elementPath));
+        } else {
+          waitForElement(elementPath, callBack);
+        }
+      }, 500)
+    }
 
-    $("#closeModal").click(function () {
-      $(".modal").removeClass("is-active");
-    });
   </script>
-  
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="row">
+          <div class="col-lg-7 mx-auto">
+            <div class="bg-white rounded-lg shadow-sm p-5">
+              <!-- Credit card form tabs -->
+              <ul role="tablist" class="nav bg-light nav-pills rounded-pill nav-fill mb-3">
+                <li class="nav-item">
+                  <a data-toggle="pill" href="#nav-tab-card" class="nav-link active rounded-pill">
+                    <i class="fa fa-credit-card"></i>
+                    Credit Card
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a data-toggle="pill" href="#nav-tab-paypal" class="nav-link rounded-pill">
+                    <i class="fa fa-paypal"></i>
+                    Paypal
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a data-toggle="pill" href="#nav-tab-bank" class="nav-link rounded-pill">
+                    <i class="fa fa-university"></i>
+                    Bank Transfer
+                  </a>
+                </li>
+              </ul>
+              <!-- End -->
+
+
+              <!-- Credit card form content -->
+              <div class="tab-content">
+
+                <!-- credit card info-->
+                <div id="nav-tab-card" class="tab-pane fade show active">
+                  <form role="form" onsubmit="sendMoney(event.preventDefault())">
+                    <label>Amount:</label>
+                    <input id="campaign-money" type="text" class="form-control">
+
+                    <div class="form-group">
+                      <label for="username">Full name (on the card)</label>
+                      <input type="text" name="username" placeholder="Jason Doe" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label for="cardNumber">Card number</label>
+                      <div class="input-group">
+                        <input type="text" name="cardNumber" placeholder="Your card number" class="form-control"
+                          required>
+                        <div class="input-group-append">
+                          <span class="input-group-text text-muted">
+                            <i class="fa fa-cc-visa mx-1"></i>
+                            <i class="fa fa-cc-amex mx-1"></i>
+                            <i class="fa fa-cc-mastercard mx-1"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <div class="form-group">
+                          <label><span class="hidden-xs">Expiration</span></label>
+                          <div class="input-group">
+                            <input type="number" placeholder="MM" name="" class="form-control" required>
+                            <input type="number" placeholder="YY" name="" class="form-control" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group mb-4">
+                          <label data-toggle="tooltip" title="Three-digits code on the back of your card">CVV
+                            <i class="fa fa-question-circle"></i>
+                          </label>
+                          <input type="text" required class="form-control">
+                        </div>
+                      </div>
+
+
+
+                    </div>
+                    <button type="submit" class="subscribe btn btn-primary btn-block rounded-pill shadow-sm close"
+                      data-dismiss="modal"> Confirm </button>
+                  </form>
+                </div>
+                <!-- End -->
+
+                <!-- Paypal info -->
+                <div id="nav-tab-paypal" class="tab-pane fade">
+                  <p>Paypal is easiest way to pay online</p>
+                  <p>
+                    <button type="button" class="btn btn-primary rounded-pill"><i class="fa fa-paypal mr-2"></i> Log
+                      into my Paypal</button>
+                  </p>
+                  <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua.
+                  </p>
+                </div>
+                <!-- End -->
+
+                <!-- bank transfer info -->
+                <div id="nav-tab-bank" class="tab-pane fade">
+                  <label>Amount:</label>
+                  <input type="text" class="form-control">
+                  <h6>Bank Account Details</h6>
+                  <hr>
+                  <dt>Bank</dt>
+                  <input type="text" class="form-control">
+
+
+                  <dt>Account number</dt>
+                  <input type="text" class="form-control">
+
+
+                  <dt>OTP</dt>
+                  <input type="text" class="form-control">
+                  <hr>
+                  <p class="text-muted">Bank Notes.
+                  </p>
+                  <button type="button" class="subscribe btn btn-primary btn-block rounded-pill shadow-sm close"
+                    data-dismiss="modal"> Confirm </button>
+
+                </div>
+                <!-- End -->
+              </div>
+              <!-- End -->
+
+            </div>
+          </div>
+        </div>
 </body>
+
 </html>
